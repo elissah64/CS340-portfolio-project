@@ -1,2 +1,2 @@
-Please push all changes to the "Work" branch.
-When all changes are pushed to the "Work" branch, initiate a pull request to merge with the main branch after teammate has approved/reviewed large changes
+Please push all changes to the dev branch
+When all changes are pushed to the dev branch and confirmed to be working, initiate a pull request to merge with the main branch
