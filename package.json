@@ -1,0 +1,28 @@
+{
+  "name": "hobbiton_library",
+  "version": "1.0.0",
+  "description": "database for library in Hobbiton",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elissah64/CS340-portfolio-project.git#main"
+  },
+  "keywords": [
+    "database",
+    "library"
+  ],
+  "author": "Gwenn and Elissa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elissah64/CS340-portfolio-project/issues"
+  },
+  "homepage": "https://github.com/elissah64/CS340-portfolio-project/tree/main#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "forever": "^0.14.2",
+    "mysql": "^2.18.1"
+  }
+}
