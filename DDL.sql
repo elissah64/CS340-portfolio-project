@@ -1,31 +1,36 @@
 /* Group #97
-   Members: Elissa Hada and Gwen Thompson
+   Members: Elissa Hada and Gwenn Thompson
    Project: Step 2 Draft */
 
+SET FOREIGN_KEY_CHECKS=0;
+SET AUTOCOMMIT = 0;
 
 /* Create the tables */
+DROP TABLE IF EXISTS Books;
 CREATE TABLE IF NOT EXISTS Books (
-	bookID int NOT NULL AUTO_INCREMENT UNIQUE, 
+	bookID int NOT NULL AUTO_INCREMENT UNIQUE,
 	title varchar(255) NOT NULL,
 	author varchar(255) NOT NULL,
-	subject varchar(255) NOT NULL, 
+	subject varchar(255) NOT NULL,
 	location varchar(255) NOT NULL,
 	PRIMARY KEY (bookID)
 );
 
+DROP TABLE IF EXISTS Holds;
 CREATE TABLE IF NOT EXISTS Holds (
 	holdID int NOT NULL AUTO_INCREMENT UNIQUE,
 	bookID int NOT NULL,
 	datePlaced date NOT NULL DEFAULT CURRENT_DATE,
-	posInQueue int NOT NULL, 
-	expirationDate date, 
+	posInQueue int NOT NULL,
+	expirationDate date NOT NULL,
 	status ENUM('Pending', 'Complete', 'Active', 'Canceled', 'Expired') NOT NULL,
 	notificationPref ENUM('email', 'call', 'text', 'none'),
-	PRIMARY KEY (holdID), 
+	PRIMARY KEY (holdID),
 	FOREIGN KEY (bookID) REFERENCES Books(bookID) ON DELETE RESTRICT
 	/* If a book is on hold, we cannot delete the bookID, the hold must be dealt with first */
 );
 
+DROP TABLE IF EXISTS Patrons;
 CREATE TABLE IF NOT EXISTS Patrons (
 	patronID INT NOT NULL AUTO_INCREMENT UNIQUE,
 	name varchar(255) NOT NULL,
@@ -35,24 +40,27 @@ CREATE TABLE IF NOT EXISTS Patrons (
 	PRIMARY KEY (patronID)
 );
 
+DROP TABLE IF EXISTS Transactions;
 CREATE TABLE IF NOT EXISTS Transactions (
-	transactionID int NOT NULL AUTO_INCREMENT UNIQUE, 
+	transactionID int NOT NULL AUTO_INCREMENT UNIQUE,
 	bookID int NOT NULL,
 	patronID int NOT NULL,
 	transactionDate date NOT NULL DEFAULT CURRENT_DATE,
 	transactionType ENUM('Checkout', 'Return'),
-	PRIMARY KEY (transactionID), 
+	PRIMARY KEY (transactionID),
 	FOREIGN KEY (bookID) REFERENCES Books(bookID) ON DELETE CASCADE,
 	FOREIGN KEY (patronID) REFERENCES Patrons(patronID) ON DELETE CASCADE
 	/* For both bookID and patronID, if either one is deleted in their parent table, delete the transaction */
 );
 
 /* Create intersection table */
+/* NULLable relationship between holds and patrons */
+DROP TABLE IF EXISTS Patron_Holds;
 CREATE TABLE IF NOT EXISTS Patron_Holds (
-	patron_holdID int NOT NULL AUTO_INCREMENT UNIQUE, 
-	holdID int NOT NULL, 
-	patronID int NOT NULL,
-	PRIMARY KEY (patron_holdID), 
+	patron_holdID int NOT NULL AUTO_INCREMENT UNIQUE,
+    patronID int NOT NULL,
+	holdID int,
+	PRIMARY KEY (patron_holdID),
 	FOREIGN KEY (patronID) REFERENCES Patrons(patronID) ON DELETE CASCADE,
 	FOREIGN KEY (holdID) REFERENCES Holds(holdID) ON DELETE CASCADE
 	/* If a patron or hold is deleted, they should be removed from the intersection table */
@@ -62,7 +70,7 @@ CREATE TABLE IF NOT EXISTS Patron_Holds (
 
 INSERT INTO Books (title, author, subject, location)
 VALUES
-('The Martian', 'Andy Weir', 'Science Fiction', 'Fiction Section'), 
+('There and Back Again', 'Bilbo Baggins', 'Biography', 'Non-Fiction Section'),
 ('Gone With the Wind', 'Margaret Mitchell', 'Historical Fiction', 'Fiction Section'),
 ('Where the Red Fern Grows', 'Wilson Rawls', 'Adventure', 'Young Adult Section'),
 ('The Shining', 'Stephen King', 'Horror', 'Horror/Thriller Section'),
@@ -78,19 +86,19 @@ VALUES
 
 INSERT INTO Transactions (bookID, patronID, transactionDate, transactionType)
 VALUES
-((SELECT bookID FROM Books WHERE title = 'The Martian'),
+((SELECT bookID FROM Books WHERE title = 'There and Back Again'),
 (SELECT patronID FROM Patrons WHERE name = 'Poppy Puddifoot'), '2024-04-01', 'Checkout'),
-((SELECT bookID FROM Books WHERE title = 'Dune'), 
+((SELECT bookID FROM Books WHERE title = 'Dune'),
 (SELECT patronID FROM Patrons WHERE name = 'Erard Swiftfoot'), '2024-04-03', 'Checkout'),
 ((SELECT bookID FROM Books WHERE title = 'The Shining'),
 (SELECT patronID FROM Patrons WHERE name = 'Leudast Chubb'), '2024-04-05', 'Checkout');
 
-INSERT INTO Holds (bookID, datePlaced, posInQueue, status, notificationPref)
+INSERT INTO Holds (bookID, datePlaced, posInQueue, expirationDate, status, notificationPref)
 VALUES
-((SELECT bookID FROM Books WHERE title = 'The Martian'), '2024-04-02', 1, 'Pending', 'email'),
-((SELECT bookID FROM Books WHERE title = 'The Martian'), '2024-04-03', 2, 'Pending', 'text'),
-((SELECT bookID FROM Books WHERE title = 'Where the Red Fern Grows'), '2024-04-05', 1, 'Active', 'call'),
-((SELECT bookID FROM Books WHERE title = 'Dune'), '2024-04-06', 1, 'Pending', 'call');
+((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-02', 1, '2024-05-02', 'Pending', 'email'),
+((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-03', 2, '2024-05-02','Pending', 'text'),
+((SELECT bookID FROM Books WHERE title = 'Where the Red Fern Grows'), '2024-04-05', 1, '2024-05-05', 'Active', 'call'),
+((SELECT BookID FROM Books WHERE title = 'Dune'), '2024-04-06', 1, '2024-05-06','Pending', 'call');
 
 INSERT INTO Patron_Holds (patronID, holdID)
 VALUES
@@ -110,3 +118,6 @@ DESCRIBE Books;
 DESCRIBE Transactions;
 DESCRIBE Holds;
 DESCRIBE Patron_Holds;
+
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
