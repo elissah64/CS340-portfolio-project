@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html>
-   
-    <head>
-        <title>Hobbiton Public Library</title>
-        <link href='style.css' rel='stylesheet' />
-    </head>
+
+<head>
+    <title>Hobbiton Public Library</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
 
     <body>
-        <div class='navbar'>
-            <div class='title'>
+        <header>
             <h1> Hobbiton Public Library </h1>
-        </div>
-   
-        <nav class = global>
-            <a href='index.html'>Home Page</a>
-            |
-            <a href='patrons.html'>Patrons</a>
-            |
-            <a href='transactions.html'>Transactions</a>
-            |
-            <a href='books.html'>Books</a>
-            |
-            <a href='holds.html'>Holds</a>
-        </nav>
+            <nav class = global>
+                <a href='index.html'>Home Page</a>
+                |
+                <a href='patrons.html'>Patrons</a>
+                |
+                <a href='transactions.html'>Transactions</a>
+                |
+                <a href='books.html'>Books</a>
+                |
+                <a href='holds.html'>Holds</a>
+                |
+                <a href='patron_holds.html'>Patron_Holds</a>
+            </nav>
+        </header>
 
-<h2>Holds</h2>
-<table class='main-table' id='holds-table'>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Book ID</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Position in Queue</th>
-            <th>Notification Preference</th>
-        </tr>
-    </thead>
+        <main>
+            <table class='main-table' id='holds-table'>
+                <caption>
+                    Holds
+                </caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Book Title</th>
+                        <th>Date</th>
+                        <th>Position in Queue</th>
+                        <th>Status</th>
+                        <th>Notification Preference</th>
+                    </tr>
+                </thead>
 
-    <tbody>
-        <tr data-value=1>
-            <th>1</th>
-            <th>1</th>
-            <th>2024-04-02</th>
-            <th>Pending</th>
-            <th>1</th>
-            <th>Email</th>
-        </tr>
-    
-        <tr data-value=2>
-            <th>2</th>
-            <th>1</th>
-            <th>2024-04-03</th>
-            <th>Pending</th>
-            <th>2</th>
-            <th>Text</th>
-        </tr>
+                <tbody>
+                    <tr data-value=1>
+                        <td>1</td>
+                        <td>The Martian</td>
+                        <td>2024-04-02</td>
+                        <td>Pending</td>
+                        <td>1</td>
+                        <td>Email</td>
+                    </tr>
 
-        <tr data-value=3>
-            <th>3</th>
-            <th>3</th>
-            <th>2024-04-05</th>
-            <th>Active</th>
-            <th>1</th>
-            <th>Call</th>
-        </tr>
+                    <tr data-value=2>
+                        <td>2</td>
+                        <td>The Martian</td>
+                        <td>2024-04-03</td>
+                        <td>Pending</td>
+                        <td>2</td>
+                        <td>Text</td>
+                    </tr>
 
-        <tr data-value=4>
-            <th>4</th>
-            <th>6</th>
-            <th>2024-04-06</th>
-            <th>Pending</th>
-            <th>1</th>
-            <th>Call</th>
-        </tr>
+                    <tr data-value=3>
+                        <td>3</td>
+                        <td>Where the Red Fern Grows</td>
+                        <td>2024-04-05</td>
+                        <td>Active</td>
+                        <td>1</td>
+                        <td>Call</td>
+                    </tr>
+
+                    <tr data-value=4>
+                        <td>4</td>
+                        <td>Dune</td>
+                        <td>2024-04-06</td>
+                        <td>Pending</td>
+                        <td>1</td>
+                        <td>Call</td>
+                    </tr>
+                </tbody>
+        </main>
+
+        <footer>
+            <p> &copy; 2024 Gwenn Thompson and Elissa Hada</p>
+            <p>Photo by <a href="https://unsplash.com/@thomasschweighofer_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Thomas Schweighofer</a> on <a href="https://unsplash.com/photos/landscape-photography-of-brown-wooden-house-with-trees-around-5dB9WGpJbFc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+        </footer>
+    </body>
+</html>
     </tbody>
