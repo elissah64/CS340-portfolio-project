@@ -1,87 +1,97 @@
 <!DOCTYPE html>
 <html>
-   
-    <head>
-        <title>Hobbiton Public Library</title>
-        <link href='style.css' rel='stylesheet' />
-    </head>
+
+<head>
+    <title>Hobbiton Public Library</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
 
     <body>
-        <div class='navbar'>
-            <div class='title'>
+        <header>
             <h1> Hobbiton Public Library </h1>
-        </div>
-   
-        <nav class = global>
-            <a href='index.html'>Home Page</a>
-            |
-            <a href='patrons.html'>Patrons</a>
-            |
-            <a href='transactions.html'>Transactions</a>
-            |
-            <a href='books.html'>Books</a>
-            |
-            <a href='holds.html'>Holds</a>
-        </nav>
+            <nav class = global>
+                <a href='index.html'>Home Page</a>
+                |
+                <a href='patrons.html'>Patrons</a>
+                |
+                <a href='transactions.html'>Transactions</a>
+                |
+                <a href='books.html'>Books</a>
+                |
+                <a href='holds.html'>Holds</a>
+                |
+                <a href='patron_holds.html'>Patron_Holds</a>
+            </nav>
+        </header>
+        <main>
+            <table id='books-table'>
+                <caption>
+                    Books
+                </caption>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Section</th>
+                    </tr>
+                </thead>
 
-<h2>Books</h2>
-<table class='main-table' id='books-table'>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Section</th>
-        </tr>
-    </thead>
+                <tbody>
+                    <tr data-value=1>
+                        <td>1</td>
+                        <td>The Martian</td>
+                        <td>Andy Weir</td>
+                        <td>Science Fiction</td>
+                        <td>Fiction</td>
+                    </tr>
 
-    <tbody>
-        <tr data-value=1>
-            <th>1</th>
-            <th>The Martian</th>
-            <th>Andy Weir</th>
-            <th>Science Fiction</th>
-            <th>Fiction</th>
-        </tr>
-    
-        <tr data-value=2>
-            <th>2</th>
-            <th>Gone With the Wind</th>
-            <th>Margaret Mitchell</th>
-            <th>Historical Fiction</th>
-            <th>Fiction</th>
-        </tr>
+                    <tr data-value=2>
+                        <td>2</td>
+                        <td>Gone With the Wind</td>
+                        <td>Margaret Mitchell</td>
+                        <td>Historical Fiction</td>
+                        <td>Fiction</td>
+                    </tr>
 
-        <tr data-value=3>
-            <th>3</th>
-            <th>Where the Red Fern Grows</th>
-            <th>Wilson Rawls</th>
-            <th>Adventure</th>
-            <th>Young Adult</th>
-        </tr>
+                    <tr data-value=3>
+                        <td>3</td>
+                        <td>Where the Red Fern Grows</td>
+                        <td>Wilson Rawls</td>
+                        <td>Adventure</td>
+                        <td>Young Adult</td>
+                    </tr>
 
-        <tr data-value=4>
-            <th>4</th>
-            <th>The Shining</th>
-            <th>Stephen King</th>
-            <th>Horror</th>
-            <th>Horror/Thriller</th>
-        </tr>
+                    <tr data-value=4>
+                        <td>4</td>
+                        <td>The Shining</td>
+                        <td>Stephen King</td>
+                        <td>Horror</td>
+                        <td>Horror/Thriller</td>
+                    </tr>
 
-        <tr data-value=5>
-            <th>5</th>
-            <th>Fahrenheit 451</th>
-            <th>Ray Bradbury</th>
-            <th>Dystopian Fiction</th>
-            <th>Fiction</th>
-        </tr>
+                    <tr data-value=5>
+                        <td>5</td>
+                        <td>Fahrenheit 451</td>
+                        <td>Ray Bradbury</td>
+                        <td>Dystopian Fiction</td>
+                        <td>Fiction</td>
+                    </tr>
 
-        <tr data-value=6>
-            <th>6</th>
-            <th>Dune</th>
-            <th>Frank Herbert</th>
-            <th>Science Fiction</th>
-            <th>Fiction</th>
-        </tr>
-    </tbody>
+                    <tr data-value=6>
+                        <td>6</td>
+                        <td>Dune</td>
+                        <td>Frank Herbert</td>
+                        <td>Science Fiction</td>
+                        <td>Fiction</td>
+                    </tr>
+                </tbody>
+        </main>
+
+    <footer>
+        <p> &copy; 2024 Gwenn Thompson and Elissa Hada</p>
+        <p>Photo by <a href="https://unsplash.com/@thomasschweighofer_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Thomas Schweighofer</a> on <a href="https://unsplash.com/photos/landscape-photography-of-brown-wooden-house-with-trees-around-5dB9WGpJbFc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+    </footer>
+</body>
+</html>
