@@ -28,7 +28,7 @@ DELETE FROM Books WHERE bookID = :bookID;
 -- SELECT HOLDS TABLE
 SELECT
     Holds.holdID AS ID,
-    Holds.title AS "Book Title",
+    Books.title AS "Book Title",
     Holds.datePlaced AS "Date",
     Holds.posInQueue AS "Position in Queue",
     Holds.Status AS "Status",
@@ -37,12 +37,12 @@ SELECT
     INNER JOIN Books ON Books.bookID = Holds.bookID;
 
 -- ADD TO HOLDS TABLE
-INSERT INTO Holds (bookID, datePlaced, posInQueue, status, notificationPref)
-VALUES (:bookID, :datePlaced, :posInQueue, :status, :notificationPref);
+INSERT INTO Holds (title, datePlaced, posInQueue, status, notificationPref)
+VALUES (:title, :datePlaced, :posInQueue, :status, :notificationPref);
 
 -- UPDATE ENTRY IN HOLDS TABLE
 UPDATE Holds SET
-    title = (SELECT title FROM Books WHERE BookID = :bookID),
+    title = (SELECT title FROM Books WHERE title = :title),
     datePlaced = :datePlaced,
     posInQueue = :posInQueue,
     status = :status,
@@ -83,8 +83,8 @@ DELETE FROM Patrons WHERE patronID = :patronID;
 -- SELECT TRANSACTIONS TABLE
 SELECT
     Transactions.transactionID AS ID,
-    Transactions.bookID AS "BookID",
-    Transactions.patronID AS "PatronID",
+    Books.bookID AS "Book Title",
+    Patrons.name AS "Patron Name",
     Transactions.transactionDate AS Date,
     Transactions.transactionType AS "Transaction Type"
     FROM Transactions
@@ -92,13 +92,13 @@ SELECT
     INNER JOIN Patrons ON Patrons.patronID = Transactions.patronID;
 
 -- ADD TO TRANSACTIONS TABLE
-INSERT INTO Transactions (bookID, patronID, transactionDate, transactionType)
-VALUES (:bookID, patronID, transactionDate, transactionType);
+INSERT INTO Transactions (title, name, transactionDate, transactionType)
+VALUES (:title, name, transactionDate, transactionType);
 
 -- UPDATE ENTRY IN TRANSACTIONS TABLE
 UPDATE Transactions SET
-    bookId = (SELECT bookID FROM Books WHERE bookID = :bookID),
-    patronID = (SELECT patronID FROM Patrons WHERE patronID = :patronID),
+    title = (SELECT title FROM Books WHERE title = :title),
+    name = (SELECT namr FROM Patrons WHERE name = :name),
     transactionDate = :transactionDate,
     transactionType = :transactionType
     WHERE transactionID = :transactionID;
@@ -110,24 +110,24 @@ DELETE FROM Transactions WHERE transactionID = :transactionID;
 -- SELECT PATRON_HOLDS TABLE
 SELECT
     Patron_Holds.patron_holdID AS ID,
-    Patron_Holds.name AS "Patron Name",
-    Patron_Holds.title AS "Book Title",
-    Patron_Holds.datePlaced AS Date,
+    Patrons.name AS "Patron Name",
+    Books.title AS "Book Title",
+    Holds.datePlaced AS Date,
     FROM Patron_Holds
     INNER JOIN Holds ON Holds.holdID = Patron_Holds.holdID
     INNER JOIN Books ON Holds.bookID = Books.bookID;
     INNER JOIN Patrons ON Patrons.patronID = Patron_Holds.patronID
 
 -- ADD TO PATRON_HOLDS TABLE
-INSERT INTO Patron_Holds (ID, name, title, datePlaced)
-VALUES (:ID, name, title, datePlaced);
+INSERT INTO Patron_Holds (name, title, datePlaced)
+VALUES (:name, title, datePlaced);
 
 -- UPDATE ENTRY IN PATRON_HOLDS TABLE
 UPDATE Patron_Holds SET
     patron_holdID = :patron_holdID
-    name = (SELECT name FROM Patrons WHERE patronID = :patronID),
-    title = (SELECT title FROM Books WHERE bookID = :bookID),
-    datePlaced = :datePlaced,
+    name = (SELECT name FROM Patrons WHERE name = :name),
+    title = (SELECT title FROM Books WHERE title = :title),
+    datePlaced = (SELECT datePlaced FROM Holds WHERE datePlaced = :datePlaced)
     WHERE patron_holdID = :patron_holdID;
 
 -- DELETE A TRANSACTION
