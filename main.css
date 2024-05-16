@@ -1,16 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
 
 
-:root {
-    --gaia:rgba(9, 87, 57);
-    --sage:rgba(161, 240, 200, 0.95);
-    --tefiti:rgba(15, 148, 10, 0.911);
-    --mist:rgba(189, 215, 245, 0.877);
-    --bark:rgba(32, 22, 10, 0.877);
-    --autumnFade:rgb(124, 108, 94);
-    --dust:rgb(223, 207, 193);
-  }
-
 
 body {       /* Can alternatively define in html {} or :root {} */
 background-image: url("images/shire.jpg");
@@ -24,7 +14,7 @@ margin-left: 0px;
 }
 
 header {
-    margin-bottom:2%;
+    margin-bottom:1.5%;
     padding:.5%;
     text-align: center;
     background: rgba(169, 224, 250, 0.75);
@@ -46,37 +36,94 @@ footer{
     width:100%;
 }
 
-h2 {
-    text-align: center;
+h2{
+    text-align: left;
+    background-color: rgb(169, 224, 250, 0.75);
+    padding: 1%;
 }
 
 /* --------Table-------- */
 table {
     width: 80%;
-    border: 2px solid var(--bark);
+    border: 2px solid rgb(29, 19, 19);
     padding: 5%;
     border-collapse: collapse;
     white-space: nowrap;
 }
 thead {}
 tr th {
-    background-color:forestgreen;
+    background-color:rgb(32, 109, 32);
     padding:.5%;
     min-width:130px;
-    border-bottom:2px solid var(--bark);
+    border-bottom:2px solid rgb(29, 19, 19);
     text-align: left;
 }
 tr td {
-    border-bottom:1.5px solid var(--bark);
-    border-right:1.5px solid var(--bark);
+    border-bottom:1.5px solid rgb(29, 19, 19);
+    border-right:1.5px solid rgb(29, 19, 19);
     padding:.6%;
-    min-width:80px;
-    background-color: floralwhite;
+    background-color: rgb(255, 250, 240, 0.7);
+}
+td{
+    padding: 100%;
 }
 caption {
 font-weight: bold;
 font-size: 30px;
-padding:1%;
+padding: 1%;
+}
+td:nth-child(1){
+    text-align: right;
+    width: 30px;
+  }
+.form-cap{
+    font-size: 14px;
+    font-weight: lighter;
+}
+.form-table{
+    border-collapse:collapse;
+    padding: 100%;
+    width: auto;
+}
+.form-table tr td{
+    width: auto;
+}
+.form-table td{
+    width: 100%;
+    padding: 1%;
+    min-width: 170px;
+}
+.form-table td:nth-child(1){
+    text-align: left;
+}
+.form-table label{
+    font-size: 14px;
+}
+.home-table{
+    margin-top: 80px;
+}
+.home-table td:nth-child(1){
+    text-align: left;
+}
+
+/*----------Field-----------*/
+fieldset{
+    width: 500px;
+    padding: 20px;
+    margin: 100px;
+    box-sizing: border-box;
+    background-color: rgba(245, 245, 245,.5);
+}
+legend{
+    font-size: 1.2em;
+    background-color:rgb(32, 109, 32);
+}
+button{
+    margin: 10px;
+    padding: 1%;
+    width: 70px;
+    border-color: rgb(29, 19, 19);
+    border-radius: 8px;
 }
 
 
