@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Transactions (
 	bookID int NOT NULL,
 	patronID int NOT NULL,
 	transactionDate date NOT NULL DEFAULT CURRENT_DATE,
-	transactionType ENUM('Checkout', 'Return'),
+	transactionType ENUM('Checkout', 'Return') NOT NULL,
 	PRIMARY KEY (transactionID),
 	FOREIGN KEY (bookID) REFERENCES Books(bookID) ON DELETE CASCADE,
 	FOREIGN KEY (patronID) REFERENCES Patrons(patronID) ON DELETE CASCADE
