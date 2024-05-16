@@ -4,6 +4,7 @@
 <head>
     <title>Hobbiton Public Library</title>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+
 </head>
 
     <body>
@@ -24,7 +25,7 @@
             </nav>
         </header>
         <main>
-            <table id='books-table'>
+            <table class='main-table' id='books-table'>
                 <caption>
                     Books
                 </caption>
@@ -35,6 +36,7 @@
                         <th>Author</th>
                         <th>Genre</th>
                         <th>Section</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -45,6 +47,9 @@
                         <td>Andy Weir</td>
                         <td>Science Fiction</td>
                         <td>Fiction</td>
+                        <td>
+                            <button onclick="deleteBook(1)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=2>
@@ -53,6 +58,9 @@
                         <td>Margaret Mitchell</td>
                         <td>Historical Fiction</td>
                         <td>Fiction</td>
+                        <td>
+                            <button onclick="deleteBook(2)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=3>
@@ -61,6 +69,9 @@
                         <td>Wilson Rawls</td>
                         <td>Adventure</td>
                         <td>Young Adult</td>
+                        <td>
+                            <button onclick="deleteBook(3)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=4>
@@ -69,6 +80,9 @@
                         <td>Stephen King</td>
                         <td>Horror</td>
                         <td>Horror/Thriller</td>
+                        <td>
+                            <button onclick="deleteBook(4)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=5>
@@ -77,6 +91,9 @@
                         <td>Ray Bradbury</td>
                         <td>Dystopian Fiction</td>
                         <td>Fiction</td>
+                        <td>
+                            <button onclick="deleteBook(5)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=6>
@@ -85,9 +102,57 @@
                         <td>Frank Herbert</td>
                         <td>Science Fiction</td>
                         <td>Fiction</td>
+                        <td>
+                            <button onclick="deleteBook(6)">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
+            </table>
         </main>
+
+        <div>
+            <form id="add-book-form" action="/add-book" method="POST">
+                <fieldset>
+                    <legend>
+                        ADD BOOK
+                    </legend>
+
+                    <table class="form-table">
+                        <caption class="form-cap">
+                            Please fill out the form below
+                        </caption>
+
+                        <tbody>
+                            <tr>
+                                <td><label for="title">Title:</label></td>
+                                <td><input type="text" name ="title" required=""></td>
+                                <td>*Required Field</td>
+                            </tr>
+                            <tr>
+                                <td><label for="author">Author:</label></td>
+                                <td><input type="text" name ="author" required=""></td>
+                                <td>*Required Field</td>
+                            </tr>
+                            <tr>
+                                <td><label for="genre">Genre:</label></td>
+                                <td>
+                                    <select id="genre" name="genre">
+                                        <option value="Biography">Biography</option>
+                                        <option value="Historical">Historical Fiction</option>
+                                        <option value="Adventure">Adventure</option>
+                                        <option value="Horror">Horror</option>
+                                        <option value="Dystopian">Dystopian Fiction</option>
+                                        <option value="SciFi">Science Fiction</option>
+                                    </select>
+                                </td>
+                                <td>*Required Field</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="add">Add</button>
+                </fieldset>
+            </form>
+        </div>
 
     <footer>
         <p> &copy; 2024 Gwenn Thompson and Elissa Hada</p>
