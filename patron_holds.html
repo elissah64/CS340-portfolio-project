@@ -35,6 +35,7 @@
                         <th>Patron Name</th>
                         <th>Book Title</th>
                         <th>Date Hold Placed</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -44,6 +45,9 @@
                         <td>Merwig Greenhand</td>
                         <td>There and Back Again</td>
                         <td>2024-04-02</td>
+                        <td>
+                            <button onclick="deletePatron(4)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=6>
@@ -51,6 +55,9 @@
                         <td>Erard Swiftfoot</td>
                         <td>There and Back Again</td>
                         <td>2024-04-03</td>
+                        <td>
+                            <button onclick="deletePatron(4)">Delete</button>
+                        </td>
                     </tr>
 
                     <tr data-value=4>
@@ -58,10 +65,88 @@
                         <td>Merwig Greenhand</td>
                         <td>Where the Red Fern Grows</td>
                         <td>2024-04-05</td>
+                        <td>
+                            <button onclick="deletePatron(4)">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </main>
+
+        <div>
+            <form id="add-patron-holds-form" action="/add-patron-holds" method="POST">
+                <fieldset>
+                    <legend>
+                        ADD PATRON HOLD
+                    </legend>
+                    <table class='form-table'>
+                        <caption class="form-cap">
+                            Please fill out the form below
+                        </caption>
+                        <tbody>
+                            <tr>
+                                <td><label for="name">Patron Name:</label></td>
+                                <td><input type="text" name ="name" required=""></td>
+                                <td>*Required Field</td>
+                            </tr>
+                            <tr>
+                                <td><label for="title">Book Title:</label></td>
+                                <td><input type="text" name ="book" required=""></td>
+                                <td>*Required Field</td>
+                            </tr>
+                            <tr>
+                                <td><label for="date">Date Hold Placed:</label></td>
+                                <td><input id="date" name="date" type="date" required=""></td>
+                                <td>*Required Field</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="add">Add</button>
+                </fieldset>
+            </form>
+            <form id="add-patron-holds-form" action="/add-patron-holds" method="POST">
+                <fieldset>
+                    <legend>
+                        UPDATE PATRON HOLD
+                    </legend>
+                    <table class='form-table'>
+                        <caption class="form-cap">
+                            Please choose the record you would like to update and enter new information
+                        </caption>
+                        <tbody>
+                            <tr>
+                                <td><label for="patron-hold-select">Select Patron_Hold ID:</label></td>
+                                <td>
+                                    <select id="patron-hold-select" name="patron-hold-select">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </td>
+                                <td>*Required Field</td>
+                            </tr>
+                            <tr>
+                                <td><label for="name">Patron Name:</label></td>
+                                <td><input type="text" name ="name"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><label for="title">Book Title:</label></td>
+                                <td><input type="text" name ="book"></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><label for="date">Date Hold Placed:</label></td>
+                                <td><input id="date" name="date" type="date"></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="update">Update</button>
+                </fieldset>
+            </form>
+
+        </div>
 
 
     <footer>
