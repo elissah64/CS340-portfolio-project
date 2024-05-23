@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS Holds;
 CREATE TABLE IF NOT EXISTS Holds (
 	holdID int NOT NULL AUTO_INCREMENT UNIQUE,
 	bookID int NOT NULL,
+	name varchar(255) NOT NULL,
 	datePlaced date NOT NULL DEFAULT CURRENT_DATE,
 	posInQueue int NOT NULL,
 	expirationDate date NOT NULL,
@@ -93,12 +94,12 @@ VALUES
 ((SELECT bookID FROM Books WHERE title = 'The Shining'),
 (SELECT patronID FROM Patrons WHERE name = 'Leudast Chubb'), '2024-04-05', 'Checkout');
 
-INSERT INTO Holds (bookID, datePlaced, posInQueue, expirationDate, status, notificationPref)
+INSERT INTO Holds (bookID, datePlaced, name, posInQueue, expirationDate, status, notificationPref)
 VALUES
-((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-02', 1, '2024-05-02', 'Pending', 'email'),
-((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-03', 2, '2024-05-02','Pending', 'text'),
-((SELECT bookID FROM Books WHERE title = 'Where the Red Fern Grows'), '2024-04-05', 1, '2024-05-05', 'Active', 'call'),
-((SELECT BookID FROM Books WHERE title = 'Dune'), '2024-04-06', 1, '2024-05-06','Pending', 'call');
+((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-02', 'Merwig Greenhand', 1, '2024-05-02', 'Pending', 'email'),
+((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-03', 'Erard Swiftfood', 2, '2024-05-02','Pending', 'text'),
+((SELECT bookID FROM Books WHERE title = 'Where the Red Fern Grows'), '2024-04-05', 'Poppy Puddifoot', 1, '2024-05-05', 'Active', 'call'),
+((SELECT BookID FROM Books WHERE title = 'Dune'), '2024-04-06', 'Leudast Chubb', 1, '2024-05-06','Pending', 'call');
 
 INSERT INTO Patron_Holds (patronID, holdID)
 VALUES
