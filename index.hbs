@@ -1,6 +1,21 @@
 {{!-- views/index.hbs --}}
-{{> header}}
 
+<header>
+    <h1> Hobbiton Public Library </h1>
+    <nav class = global>
+        <a href='index.html'>Home Page</a>
+        |
+        <a href='patrons.html'>Patrons</a>
+        |
+        <a href='transactions.html'>Transactions</a>
+        |
+        <a href='books.html'>Books</a>
+        |
+        <a href='holds.html'>Holds</a>
+        |
+        <a href='patron_holds.html'>Patron_Holds</a>
+    </nav>
+</header>
 <h2>Welcome to the Hobbiton Library Database!</h2>
 <main>
     <table class="home-table">
@@ -38,4 +53,3 @@
         </tbody>
     </table>
 </main>
-{{> footer}}
