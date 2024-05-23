@@ -1,0 +1,171 @@
+<header>
+  <h1>Hobbiton Public Library</h1>
+<nav class="global">
+  <a href="/">Home</a>
+  |
+  <a href="patrons">Patrons</a>
+  |
+  <a href="transactions">Transactions</a>
+  |
+  <a href="books">Books</a>
+  |
+  <a href="holds">Holds</a>
+  |
+  <a href="patron_holds">Patron Holds</a>
+</nav>
+</header>
+<script src="/js/delete_hold.js"></script>
+<main>
+    <table class='main-table' id='holds-table'>
+        <caption>
+            Holds
+        </caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Book Title</th>
+            <th>Date</th>
+            <th>Position in Queue</th>
+            <th>Status</th>
+            <th>Notification Preference</th>
+            <th></th>
+        </tr>
+    </thead>
+      <tbody>
+        {{#each data}}
+          <tr>
+            <td>{{this.holdID}}</td>
+            <td>{{this.bookID}}</td>
+            <td>{{this.datePlaced}}</td>
+            <td>{{this.posInQueue}}</td>
+            <td>{{this.status}}</td>
+            <td>{{this.notificationPref}}</td>
+            <td>
+               <button onClick="deleteHold({{this.holdID}})">Delete</button>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</main>
+ <div>
+    <form id="add-hold-form" method="POST" action="/add-hold-form">
+
+        <fieldset>
+            <legend>
+                ADD HOLD
+            </legend>
+            <table class="form-table">
+                <caption class="form-cap">
+                    Please fill out the form below
+                </caption>
+                <tbody>
+                    <tr>
+                        <td><label for="name">Patron Name:</label></td>
+                        <td><input type="text" name ="name" id="name" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="title">Book Title:</label></td>
+                        <td><input type="text" name ="title" id="title" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="date">Date:</label></td>
+                        <td><input name="date" type="date" id="date" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                     <tr>
+                        <td><label for="posInQueue">Position in Queue:</label></td>
+                        <td><input name="posinQueue" type="int" id="posInQueue" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="status">Status:</label></td>
+                        <td>
+                            <select id="status" name="status">
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Complete">Complete</option>
+                                <option value="Canceled">Canceled</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="notificationPref">Notification Preference:</label></td>
+                        <td>
+                            <select id="notificationPref" name="notificationPref" default="None">
+                                <option value="None">None</option>
+                                <option value="Call">Call</option>
+                                <option value="Text">Text</option>
+                                <option value="Email">Email</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit">Add</button>
+        </fieldset>
+    </form>
+
+    <form id="update-hold-form">
+        <fieldset>
+            <legend>
+                UPDATE HOLD
+            </legend>
+            <table class="form-table">
+                <caption class="form-cap">
+                    To update hold, select ID from the drop down and enter new data
+                </caption>
+                <tbody>
+                    <tr>
+                        <td><label for="holdSelect">Select Hold ID:</label></td>
+                        <td>
+                            <select id="holdSelect" name="holdSelect">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="statusSelect">Status:</label></td>
+                        <td>
+                            <select id="statusSelect" name="status">
+                                <option value="Pending">Pending</option>
+                                <option value="Active">Active</option>
+                                <option value="Complete">Complete</option>
+                                <option value="Canceled">Canceled</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="notificationPrefSelect">Notification Preference:</label></td>
+                        <td>
+                            <select id="notificationPrefSelect" name="notificationPref">
+                                <option value="Call">Call</option>
+                                <option value="Text">Text</option>
+                                <option value="Email">Email</option>
+                                <option value="None">None</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit">Update Hold</button>
+        </fieldset>
+    </form>
+    <script src="./js/update_person.js"></script>
+  </div>
+<footer>
+    <p> &copy; 2024 Gwenn Thompson and Elissa Hada</p>
+    <p>Photo by <a href="https://unsplash.com/@thomasschweighofer_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Thomas Schweighofer</a> on <a href="https://unsplash.com/photos/landscape-photography-of-brown-wooden-house-with-trees-around-5dB9WGpJbFc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+</footer>
