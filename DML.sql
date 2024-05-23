@@ -30,6 +30,7 @@ SELECT
     Holds.holdID AS ID,
     Books.title AS "Book Title",
     Holds.datePlaced AS "Date",
+    Books.name AS "Patron Name",
     Holds.posInQueue AS "Position in Queue",
     Holds.Status AS "Status",
     Holds.notificationPref AS "Notification Preference"
@@ -37,13 +38,14 @@ SELECT
     INNER JOIN Books ON Books.bookID = Holds.bookID;
 
 -- ADD TO HOLDS TABLE
-INSERT INTO Holds (title, datePlaced, posInQueue, status, notificationPref)
-VALUES (:title, :datePlaced, :posInQueue, :status, :notificationPref);
+INSERT INTO Holds (title, datePlaced, name, posInQueue, status, notificationPref)
+VALUES (:title, :datePlaced, :name, :posInQueue, :status, :notificationPref);
 
 -- UPDATE ENTRY IN HOLDS TABLE
 UPDATE Holds SET
     title = (SELECT title FROM Books WHERE title = :title),
     datePlaced = :datePlaced,
+    name = :name,
     posInQueue = :posInQueue,
     status = :status,
     notificationPref = :notificationPref
