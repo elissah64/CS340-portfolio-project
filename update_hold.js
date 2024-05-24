@@ -28,7 +28,6 @@ updatePersonForm.addEventListener("submit", function (e) {
         return;
     }
     let data = {
-        holdID:holdIDValue,
         status: statusValue,
         notificationPref: notificationPrefValue,
     }
@@ -43,7 +42,7 @@ updatePersonForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
 
             // Add the new data to the table
-            updateRow(xhttp.response, fullNameValue);
+            updateRow(xhttp.response, holdIDValue);
 
         }
         else if (xhttp.readyState == 4 && xhttp.status != 200) {
