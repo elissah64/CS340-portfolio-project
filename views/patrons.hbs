@@ -1,0 +1,130 @@
+
+<header>
+    <h1> Hobbiton Public Library </h1>
+    <nav class = global>
+        <a href='/'>Home Page</a>
+        |
+        <a href='patrons'>Patrons</a>
+        |
+        <a href='transactions'>Transactions</a>
+        |
+        <a href='books'>Books</a>
+        |
+        <a href='holds'>Holds</a>
+        |
+        <a href='patron_holds'>Patron_Holds</a>
+    </nav>
+</header>
+<main>
+    <table  class='main-table' id='patrons-table'>
+        <caption>
+            Patrons
+        </caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {{#each data}}
+            <tr>
+                <td>{{this.patronID}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.address}}</td>
+                <td>{{this.email}}</td>
+                <td>{{this.phone}}</td>
+                <td>
+                    <button onClick="deletePatron{{this.patronID}}">Delete</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+
+<div>
+    <form id="add-patron-form" action="/add-patron" method="POST">
+        <fieldset>
+            <legend>
+                ADD PATRON
+            </legend>
+            <table class="form-table">
+                <caption class="form-cap">
+                    Please fill out the form below
+                </caption>
+                <tbody>
+                    <tr>
+                        <td><label for="name">Full Name:</label></td>
+                        <td><input type="text" name ="fullName" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="address">Residence:</label></td>
+                        <td><input type="text" name ="address" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email:</label></td>
+                        <td><input type="email" name ="email" required></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="phone">Phone Number:</label></td>
+                        <td><input type="tel" name ="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required></td>
+                        <td>*Required Field</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="add">Add</button>
+        </fieldset>
+    </form>
+    <form id="update-patron-form" action="/update-patron" method="POST">
+        <fieldset>
+            <legend>
+                UPDATE PATRON
+            </legend>
+            <table class="form-table">
+                <caption class="form-cap">
+                    To update patron, select patron from the drop down and enter new data
+                </caption>
+                <tbody>
+                    <tr>
+                        <td><label for="patronSelect">Select Patron:</label></td>
+                        <td>
+                            <select id="patronSelect" name="patronSelect">
+                                <option value="1">Erard Swiftfoot</option>
+                                <option value="2">Leudast Chubb</option>
+                                <option value="3">Merwig Greenhand</option>
+                                <option value="4">Poppy Puddifoot</option>
+                            </select>
+                        </td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="address">Residence:</label></td>
+                        <td><input type="text" name ="address"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email:</label></td>
+                        <td><input type="email" name ="email"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="phone">Phone Number:</label></td>
+                        <td><input type="tel" name ="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="update">Update Patron</button>
+        </fieldset>
+    </form>
+</div>
+

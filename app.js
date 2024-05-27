@@ -6,18 +6,18 @@
     SETUP
 */
 // Express
-var express = require('express');
-var app = express();
-PORT = 3790;
+const express = require('express');
+const app = express();
+const PORT = 3792;
 const path = require('path');
 // Database
-var db = require('./database/db-connector');
+const db = require('./database/db-connector');
 
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+app.set('view engine', '.hbs');
 
 // app.js
 app.use(express.json())
@@ -72,7 +72,7 @@ app.get('/books', function(req, res)
     });
 });
 
-// Display Holds table
+// Display Holds Table
 app.get('/holds', function(req, res)
 {
         let query1 = "SELECT * FROM Holds;";
@@ -85,6 +85,7 @@ app.get('/holds', function(req, res)
     });
 });
 
+// DELETES HOLD
 app.delete('/delete-hold/:holdID', function(req,res,next){
     let data = req.body;
     console.log(req.params.holdID);
@@ -108,28 +109,107 @@ app.delete('/delete-hold/:holdID', function(req,res,next){
               }
   })});
 
-  // app.js
-
+  // ADDS HOLD
   app.post('/add-hold-form', function(req, res) {
+
     let data = req.body;
+    let query1 = `INSERT INTO Holds (holdID, bookID, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?)`;
 
-    // Construct the SQL query using placeholders
-    let query1 = `INSERT INTO Holds (name, title, datePlaced, status, notificationPref) VALUES (${name}, ${title}, ${datePlaced}, ${posInQueue}, ${status}, ${notificationPref})`;
-
-    // Execute the query
-    db.pool.query(query1, function(error, rows, fields) {
+    // Execute the query with parameter values
+    db.pool.query(query1, [data.holdID, data.bookID, data.datePlaced, data.posInQueue, data.status, data.notificationPref], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            res.redirect('/Holds');
+            res.redirect('/holds');
+        }
+    });
+});
+
+// UPDATES HOLD
+app.put('/update-hold-form', function(req,res,next){
+    let data = req.body;
+
+    let holdID = parseInt(data.holdID);
+    let status = data.status;
+    let notificationPref = data.notificationPref;
+
+    let queryUpdateHold = `UPDATE Holds SET status = ?, notificationPref = ? WHERE holdID = ?`;
+
+          db.pool.query(queryUpdateHold, [ status, notificationPref, holdID], function(error, rows, fields){
+              if (error) {
+              console.log(error);
+              res.sendStatus(400);
+              }
+              else
+              {
+                let selectQuery = 'SELECT * FROM Holds WHERE holdID = ?'
+                db.pool.query(selectQuery, [holdID], function(error, rows, fields) {
+
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
+// DELETES BOOK
+app.delete('/delete-book/:bookID', function(req,res){
+    console.log(req.params.bookID);
+    let deleteBook = `DELETE FROM Books WHERE bookID = ?`;
+          db.pool.query(deleteBook, [req.params.bookID], function(error, rows, fields){
+              if (error) {
+              console.log(error);
+              res.sendStatus(400);
+              }
+              else
+              {
+                  db.pool.query(deleteBook, [req.params.bookID], function(error, rows, fields) {
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.sendStatus(204);
+                      }
+                  })
+              }
+  })});
+
+  // ADDS BOOK
+  app.post('/add-book-form', function(req, res) {
+    console.log('Received data:', req.body);
+    let data = req.body;
+    let query1 = `INSERT INTO Books (title, author, subject, location) VALUES (?, ?, ?, ?)`;
+
+    // Execute the query with parameter values
+    db.pool.query(query1, [data.title, data.author, data.subject, data.location], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/books');
         }
     });
 });
 
 
-
 // Display Patron_Holds Page
+app.get('/add_holds', function(req, res)
+{
+        let query1 = "SELECT * FROM Patron_Holds;";
+    db.pool.query(query1, function(error, results){
+        if (error) {
+        res.status(500).send('Database error: ' + error.message);
+        } else {
+        res.render('patron_holds', { data: results });
+        }
+    });
+});
+
+// Display Patron Holds Table
 app.get('/patron_holds', function(req, res)
 {
         let query1 = "SELECT * FROM Patron_Holds;";

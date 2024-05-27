@@ -1,0 +1,111 @@
+<header>
+    <h1> Hobbiton Public Library </h1>
+    <nav class = global>
+        <a href='/'>Home Page</a>
+
+        <a href='patrons'>Patrons</a>
+        |
+        <a href='transactions'>Transactions</a>
+        |
+        <a href='books'>Books</a>
+        |
+        <a href='holds'>Holds</a>
+        |
+        <a href='patron_holds'>Patron_Holds</a>
+    </nav>
+</header>
+<main>
+    <table class='main-table' id='transactions-table'>
+        <caption>
+            Transactions
+        </caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Book</th>
+                <th>Patron</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr data-value=1>
+                <td>1</td>
+                <td>The Martian</td>
+                <td>Poppy Puddifoot</td>
+                <td>2024-04-01</td>
+                <td>Checkout</td>
+                <td>
+                    <button onclick="deleteTransaction(1)">Delete</button>
+                </td>
+            </tr>
+
+            <tr data-value=6>
+                <td>2</td>
+                <td>Dune</td>
+                <td>Erard Swiftfoot</td>
+                <td>2024-04-03</td>
+                <td>Checkout</td>
+                <td>
+                    <button onclick="deleteTransaction(6)">Delete</button>
+                </td>
+            </tr>
+
+            <tr data-value=4>
+                <td>3</td>
+                <td>The Shining</td>
+                <td>Leudast Chubb</td>
+                <td>2024-04-05</td>
+                <td>Checkout</td>
+                <td>
+                    <button onclick="deleteTransaction(4)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+<div>
+    <form id="add-transaction-form" action="/add-transaction" method="POST">
+        <fieldset>
+            <legend>
+                ADD TRANSACTION
+            </legend>
+            <table class='form-table'>
+                <caption class="form-cap">
+                    Please fill out the form below
+                </caption>
+                <tbody>
+                    <tr>
+                        <td><label for="title">Book Title:</label></td>
+                        <td><input type="text" name ="book" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="name">Patron Name:</label></td>
+                        <td><input type="text" name ="name" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="date">Date:</label></td>
+                        <td><input id="date" name="date" type="date" required=""></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
+                        <td><label for="type">Type:</label></td>
+                        <td>
+                            <select id="type" name="type">
+                                <option value="checkout">Checkout</option>
+                                <option value="return">Return</option>
+                            </select>
+                        </td>
+                        <td>*Required Field</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="add">Add</button>
+        </fieldset>
+    </form>
+</div>
