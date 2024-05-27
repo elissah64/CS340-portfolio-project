@@ -8,7 +8,7 @@
 // Express
 const express = require('express');
 const app = express();
-const PORT = 3792;
+const PORT = 3791;
 const path = require('path');
 // Database
 const db = require('./database/db-connector');
