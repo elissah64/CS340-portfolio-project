@@ -1,20 +1,4 @@
 
-<header>
-    <h1> Hobbiton Public Library </h1>
-    <nav class = global>
-        <a href='/'>Home Page</a>
-        |
-        <a href='patrons'>Patrons</a>
-        |
-        <a href='transactions'>Transactions</a>
-        |
-        <a href='books'>Books</a>
-        |
-        <a href='holds'>Holds</a>
-        |
-        <a href='patron_holds'>Patron_Holds</a>
-    </nav>
-</header>
 <main>
     <table  class='main-table' id='patrons-table'>
         <caption>
@@ -40,16 +24,17 @@
                 <td>{{this.email}}</td>
                 <td>{{this.phone}}</td>
                 <td>
-                    <button onClick="deletePatron{{this.patronID}}">Delete</button>
+                    <button onClick="deletePatron({{this.patronID}})">Delete</button>
                 </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+    <script src="/js/delete_patron.js"></script>
 </main>
 
 <div>
-    <form id="add-patron-form" action="/add-patron" method="POST">
+    <form id="add-patron-form" method="POST" action="/add-patron-form">
         <fieldset>
             <legend>
                 ADD PATRON
@@ -60,8 +45,13 @@
                 </caption>
                 <tbody>
                     <tr>
+                        <td><label for="patronID">Patron ID:</label></td>
+                        <td><input type="number" name ="patronID" id="patronID" required></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
                         <td><label for="name">Full Name:</label></td>
-                        <td><input type="text" name ="fullName" required=""></td>
+                        <td><input type="text" name ="name" required=""></td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
@@ -81,9 +71,10 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="add">Add</button>
+            <button type="submit">Add</button>
         </fieldset>
     </form>
+
     <form id="update-patron-form" action="/update-patron" method="POST">
         <fieldset>
             <legend>
@@ -95,36 +86,42 @@
                 </caption>
                 <tbody>
                     <tr>
-                        <td><label for="patronSelect">Select Patron:</label></td>
+                        <td><label for="patronIDSelect">Select Patron ID:</label></td>
                         <td>
-                            <select id="patronSelect" name="patronSelect">
-                                <option value="1">Erard Swiftfoot</option>
-                                <option value="2">Leudast Chubb</option>
-                                <option value="3">Merwig Greenhand</option>
-                                <option value="4">Poppy Puddifoot</option>
+                            <select id="patronIDSelect" name="patronID">
+                                <option value="">Select a Patron ID</option>
+                                {{#each data}}
+                                <option value="{{this.patronID}}">{{this.patronID}}</option>
+                                {{/each}}
                             </select>
                         </td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
-                        <td><label for="address">Residence:</label></td>
-                        <td><input type="text" name ="address"></td>
+                        <td><label for="nameSelect">Name:</label></td>
+                        <td><input id="nameSelect" type="text" name ="name"></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><label for="email">Email:</label></td>
-                        <td><input type="email" name ="email"></td>
+                        <td><label for="addressSelect">Residence:</label></td>
+                        <td><input id="addressSelect" type="text" name ="address"></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><label for="phone">Phone Number:</label></td>
-                        <td><input type="tel" name ="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></td>
+                        <td><label for="emailSelect">Email:</label></td>
+                        <td><input id="emailSelect" type="email" name ="email"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="phoneSelect">Phone Number:</label></td>
+                        <td><input id="phoneSelect" type="tel" name ="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
-            <button type="update">Update Patron</button>
+            <button type="submit">Update Patron</button>
         </fieldset>
     </form>
+    <script src="/js/update_patron.js"></script>
 </div>
 
