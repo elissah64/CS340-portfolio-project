@@ -1,37 +1,21 @@
-<header>
-    <h1> Hobbiton Public Library </h1>
-    <nav class=global>
-        <a href='/'>Home Page</a>
-        |
-        <a href='patrons'>Patrons</a>
-        |
-        <a href='transactions'>Transactions</a>
-        |
-        <a href='books'>Books</a>
-        |
-        <a href='holds'>Holds</a>
-        |
-        <a href='patron_holds'>Patron_Holds</a>
-    </nav>
-</header>
-<script src="/js/books.js"></script>
-<main>
-    <table class='main-table' id='books-table'>
-        <caption>
-            Books
-        </caption>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Section</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each data}}
+
+    <main>
+        <table class='main-table' id='books-table'>
+            <caption>
+                Books
+            </caption>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Section</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
             <tr>
                 <td>{{this.bookID}}</td>
                 <td>{{this.title}}</td>
@@ -42,69 +26,145 @@
                     <button onClick="deleteBook({{this.bookID}})">Delete</button>
                 </td>
             </tr>
-            {{/each}}
-        </tbody>
-    </table>
-</main>
-<div class="note"><em>Note: A book cannot be deleted if there is an associated Hold.</em></div>
+                {{/each}}
+            </tbody>
+        </table>
+        <script src="/js/delete_book.js"></script>
+    </main>
 
-<div>
-    <form id="add-book-form" method="POST" action="/add-book-form">
-        <fieldset>
-            <legend>
-                ADD BOOK
-            </legend>
+    <div>
+        <form id="add-book-form" action="/add-book-form" method="POST">
+            <fieldset>
+                <legend>
+                    ADD BOOK
+                </legend>
+                <table class="form-table">
+                    <caption class="form-cap">
+                        Please fill out the form below
+                    </caption>
+                    <tbody>
+                        <tr>
+                            <td><label id="bookID" for="bookID">ID:</label></td>
+                            <td><input type="number" name ="bookID" required></td>
+                            <td>*Required Field</td>
+                        </tr>
+                        <tr>
+                            <td><label id="title" for="title">Title:</label></td>
+                            <td><input type="text" name ="title" required></td>
+                            <td>*Required Field</td>
+                        </tr>
+                        <tr>
+                            <td><label id="author" for="author">Author:</label></td>
+                            <td><input type="text" name ="author" required></td>
+                            <td>*Required Field</td>
+                        </tr>
+                        <tr>
+                            <td><label for="genre">Genre:</label></td>
+                            <td>
+                                <select id="genre" name="subject">
+                                    <option value="Biography">Biography</option>
+                                    <option value="Historical">Historical Fiction</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Horror">Horror</option>
+                                    <option value="Dystopian">Dystopian Fiction</option>
+                                    <option value="SciFi">Science Fiction</option>
+                                    <option value="Children">Children's Books</option>
+                                </select>
+                            </td>
+                            <td>*Required Field</td>
+                        </tr>
+                         <tr>
+                            <td><label for="location">Section:</label></td>
+                            <td>
+                                <select id="location" name="location">
+                                    <option value="Non-Fiction">Non-Fiction</option>
+                                    <option value="Horror-Thriller">Horror/Thriller</option>
+                                    <option value="Fiction">Fiction</option>
+                                    <option value="Cooking">Cooking</option>
+                                    <option value="YoungAdult">Young Adult</option>
+                                    <option value="Children">Children</option>
+                                    <option value="Mystery">Mystery</option>
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Home-Garden">Home and Garden</option>
+                                    <option value="Self-Help">Self Help</option>
+                                </select>
+                            </td>
+                            <td>*Required Field</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit">Add</button>
+            </fieldset>
+        </form>
 
-            <table class="form-table">
-                <caption class="form-cap">
-                    Please fill out the form below
-                </caption>
-
-                <tbody>
-                    <tr>
-                        <td><label for="title">Title:</label></td>
-                        <td><input type="text" name="title" required=""></td>
-                        <td>*Required Field</td>
-                    </tr>
-                    <tr>
-                        <td><label for="author">Author:</label></td>
-                        <td><input type="text" name="author" required=""></td>
-                        <td>*Required Field</td>
-                    </tr>
-                    <tr>
-                        <td><label for="subject">Genre:</label></td>
-                        <td>
-                            <select id="subject" name="subject">
-                                <option value="Biography">Biography</option>
-                                <option value="Mystery">Mystery</option>
-                                <option value="Adventure">Adventure</option>
-                                <option value="Horror">Horror</option>
-                                <option value="Dystopian">Dystopian Fiction</option>
-                                <option value="SciFi">Science Fiction</option>
-                                <option value="Thriller">Thriller</option>
-                                <option value="Romance">Romance</option>
-                            </select>
-                        </td>
-                        <td>*Required Field</td>
-                    </tr>
-                    <tr>
-                        <td><label for="location">Section:</label></td>
-                        <td>
-                            <select id="location" name="location">
-                                <option value="Non-Fiction">Non-Fiction</option>
-                                <option value="Fiction">Fiction</option>
-                                <option value="Young Adult">Young Adult</option>
-                                <option value="Horror/Thriller">Horror/Thriller</option>
-                                <option value="Historical">Historical</option>
-                            </select>
-                        </td>
-                        <td>*Required Field</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit">Add</button>
+        <form id="update-book-form" action="/update-book-form" method="POST">
+            <fieldset>
+                <legend>
+                    EDIT BOOK
+                </legend>
+                <table class="form-table">
+                    <caption class="form-cap">
+                        Typo? No problem! You can edit book details here!
+                    </caption>
+                    <tbody>
+                        <tr>
+                            <td><label for="bookIDSelect">Select Book ID:</label></td>
+                            <td>
+                                <select id="bookIDSelect" name="bookID">
+                                    <option value="">Select a Book ID</option>
+                                    {{#each data}}
+                                    <option value="{{this.bookID}}">{{this.bookID}}</option>
+                                    {{/each}}
+                                </select>
+                            </td>
+                            <td>*Required Field</td>
+                        </tr>
+                        <tr>
+                            <td><label for="titleSelect">Title:</label></td>
+                            <td><input id="titleSelect" type="text" name ="title"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><label for="authorSelect">Author:</label></td>
+                            <td><input id="authorSelect" type="text" name ="author"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><label for="subjectSelect">Genre:</label></td>
+                            <td>
+                                <select id="subjectSelect" name="subject">
+                                    <option value="Biography">Biography</option>
+                                    <option value="Historical">Historical Fiction</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Horror">Horror</option>
+                                    <option value="Dystopian">Dystopian Fiction</option>
+                                    <option value="SciFi">Science Fiction</option>
+                                    <option value="Children">Children's Books</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="locationSelect">Section:</label></td>
+                            <td>
+                                <select id="locationSelect" name="location">
+                                    <option value="Non-Fiction">Non-Fiction</option>
+                                    <option value="Horror-Thriller">Horror/Thriller</option>
+                                    <option value="Fiction">Fiction</option>
+                                    <option value="Cooking">Cooking</option>
+                                    <option value="YoungAdult">Young Adult</option>
+                                    <option value="Children">Children</option>
+                                    <option value="Mystery">Mystery</option>
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Home-Garden">Home and Garden</option>
+                                    <option value="Self-Help">Self Help</option>
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            <button type="submit">Edit Book</button>
         </fieldset>
     </form>
-</div>
-
-</html>
+    <script src="/js/update_book.js"></script>
+    </div>
