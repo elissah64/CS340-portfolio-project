@@ -1,19 +1,4 @@
-<header>
-    <h1> Hobbiton Public Library </h1>
-    <nav class = global>
-        <a href='/'>Home Page</a>
 
-        <a href='patrons'>Patrons</a>
-        |
-        <a href='transactions'>Transactions</a>
-        |
-        <a href='books'>Books</a>
-        |
-        <a href='holds'>Holds</a>
-        |
-        <a href='patron_holds'>Patron_Holds</a>
-    </nav>
-</header>
 <main>
     <table class='main-table' id='transactions-table'>
         <caption>
@@ -29,46 +14,26 @@
                 <th></th>
             </tr>
         </thead>
-
         <tbody>
-            <tr data-value=1>
-                <td>1</td>
-                <td>The Martian</td>
-                <td>Poppy Puddifoot</td>
-                <td>2024-04-01</td>
-                <td>Checkout</td>
+                {{#each data}}
+            <tr>
+                <td>{{this.transactionID}}</td>
+                <td>{{this.bookID}}</td>
+                <td>{{this.patronID}}</td>
+                <td>{{this.transactionDate}}</td>
+                <td>{{this.transactionType}}</td>
                 <td>
-                    <button onclick="deleteTransaction(1)">Delete</button>
+                    <button onClick="deleteTransaction({{this.transactionID}})">Delete</button>
                 </td>
             </tr>
-
-            <tr data-value=6>
-                <td>2</td>
-                <td>Dune</td>
-                <td>Erard Swiftfoot</td>
-                <td>2024-04-03</td>
-                <td>Checkout</td>
-                <td>
-                    <button onclick="deleteTransaction(6)">Delete</button>
-                </td>
-            </tr>
-
-            <tr data-value=4>
-                <td>3</td>
-                <td>The Shining</td>
-                <td>Leudast Chubb</td>
-                <td>2024-04-05</td>
-                <td>Checkout</td>
-                <td>
-                    <button onclick="deleteTransaction(4)">Delete</button>
-                </td>
-            </tr>
+                {{/each}}
         </tbody>
     </table>
+    <script src="/js/delete_transaction.js"></script>
 </main>
 
 <div>
-    <form id="add-transaction-form" action="/add-transaction" method="POST">
+    <form id="add-transaction-form" action="/add-transaction-form" method="POST">
         <fieldset>
             <legend>
                 ADD TRANSACTION
@@ -79,24 +44,29 @@
                 </caption>
                 <tbody>
                     <tr>
+                        <td><label for="transactionID">ID:</label></td>
+                        <td><input id="transactionID" type="number" name ="transactionID" required></td>
+                        <td>*Required Field</td>
+                    </tr>
+                    <tr>
                         <td><label for="title">Book Title:</label></td>
-                        <td><input type="text" name ="book" required=""></td>
+                        <td><input id= "title" type="text" name ="title" required></td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
                         <td><label for="name">Patron Name:</label></td>
-                        <td><input type="text" name ="name" required=""></td>
+                        <td><input id="name" type="text" name ="name" required></td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
-                        <td><label for="date">Date:</label></td>
-                        <td><input id="date" name="date" type="date" required=""></td>
+                        <td><label for="transactionDate">Date:</label></td>
+                        <td><input id="transactionDate" name="transactionDate" type="date" required></td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
-                        <td><label for="type">Type:</label></td>
+                        <td><label for="transactionType">Type:</label></td>
                         <td>
-                            <select id="type" name="type">
+                            <select id="transactionType" name="transactionType">
                                 <option value="checkout">Checkout</option>
                                 <option value="return">Return</option>
                             </select>
@@ -105,7 +75,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="add">Add</button>
+            <button type="submit">Add</button>
         </fieldset>
     </form>
 </div>
