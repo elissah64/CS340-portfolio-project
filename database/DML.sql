@@ -28,7 +28,7 @@ DELETE FROM Books WHERE bookID = :bookID;
 -- SELECT HOLDS TABLE
 SELECT
     Holds.holdID AS ID,
-    Holds.bookID AS "Book ID",
+    Books.title AS "Book Title"
     Holds.datePlaced AS "Date",
     Holds.posInQueue AS "Position in Queue",
     Holds.Status AS "Status",
@@ -42,7 +42,7 @@ VALUES (:bookID, :datePlaced, :posInQueue, :status, :notificationPref);
 
 -- UPDATE ENTRY IN HOLDS TABLE
 UPDATE Holds SET
-    title = (SELECT title FROM Books WHERE title = :title),
+    bookID = (SELECT bookID FROM Books WHERE title = :title),
     datePlaced = :datePlaced,
     posInQueue = :posInQueue,
     status = :status,

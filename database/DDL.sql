@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS Holds;
 CREATE TABLE IF NOT EXISTS Holds (
 	holdID int NOT NULL AUTO_INCREMENT UNIQUE,
 	bookID int NOT NULL,
+	title varchar(255) NOT NULL,
 	datePlaced date NOT NULL DEFAULT CURRENT_DATE,
 	posInQueue int NOT NULL,
 	status ENUM('Pending', 'Complete', 'Active', 'Canceled', 'Expired') NOT NULL,
@@ -92,12 +93,12 @@ VALUES
 ((SELECT bookID FROM Books WHERE title = 'The Shining'),
 (SELECT patronID FROM Patrons WHERE name = 'Leudast Chubb'), '2024-04-05', 'Checkout');
 
-INSERT INTO Holds (bookID, datePlaced, posInQueue, expirationDate, status, notificationPref)
+INSERT INTO Holds (bookID, title, datePlaced, posInQueue, status, notificationPref)
 VALUES
-((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-02', 1, '2024-05-02', 'Pending', 'email'),
-((SELECT bookID FROM Books WHERE title = 'There and Back Again'), '2024-04-03', 2, '2024-05-02','Pending', 'text'),
-((SELECT bookID FROM Books WHERE title = 'Where the Red Fern Grows'), '2024-04-05', 1, '2024-05-05', 'Active', 'call'),
-((SELECT BookID FROM Books WHERE title = 'Dune'), '2024-04-06', 1, '2024-05-06','Pending', 'call');
+(7, (SELECT title FROM Books WHERE bookID = 7), '2024-04-02', 1, 'Pending', 'email'),
+(7, (SELECT title FROM Books WHERE bookID = 7), '2024-04-03', 2, 'Pending', 'text'),
+(9, (SELECT title FROM Books WHERE bookID = 9), '2024-04-05', 1, 'Active', 'call'),
+(12, (SELECT title FROM Books WHERE bookID = 12), '2024-04-05', 1, 'Pending', 'call');
 
 INSERT INTO Patron_Holds (patronID, holdID)
 VALUES
