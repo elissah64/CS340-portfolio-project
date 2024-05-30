@@ -83,7 +83,7 @@ DELETE FROM Patrons WHERE patronID = :patronID;
 -- SELECT TRANSACTIONS TABLE
 SELECT
     Transactions.transactionID AS ID,
-    Books.bookID AS "Book Title",
+    Books.title AS "Book Title",
     Patrons.name AS "Patron Name",
     Transactions.transactionDate AS Date,
     Transactions.transactionType AS "Transaction Type"
@@ -92,13 +92,13 @@ SELECT
     INNER JOIN Patrons ON Patrons.patronID = Transactions.patronID;
 
 -- ADD TO TRANSACTIONS TABLE
-INSERT INTO Transactions (title, name, transactionDate, transactionType)
-VALUES (:title, name, transactionDate, transactionType);
+INSERT INTO Transactions (bookID, patronID, transactionDate, transactionType)
+VALUES (:bookID, :patronID, :transactionDate, :transactionType);
 
 -- UPDATE ENTRY IN TRANSACTIONS TABLE
 UPDATE Transactions SET
-    title = (SELECT title FROM Books WHERE title = :title),
-    name = (SELECT name FROM Patrons WHERE name = :name),
+    bookID = (SELECT bookID FROM Books WHERE title = :title),
+    patronID = (SELECT patronID FROM Patrons WHERE name = :name),
     transactionDate = :transactionDate,
     transactionType = :transactionType
     WHERE transactionID = :transactionID;
