@@ -8,7 +8,7 @@
 // Express
 const express = require('express');
 const app = express();
-const PORT = 3793;
+const PORT = 3796;
 const path = require('path');
 // Database
 const db = require('./database/db-connector');
@@ -117,17 +117,55 @@ app.put('/update-patron-form', function (req, res, next) {
 });
 
 
-// DISPLAY TRANSACTION TABLE
+// DISPLAY TRANSACTIONS TABLE
 app.get('/transactions', function (req, res) {
-    let query1 = "SELECT * FROM Transactions;";
-    db.pool.query(query1, function (error, results) {
+    let transactionQuery = "SELECT * FROM Transactions;";
+    let bookQuery = "SELECT bookID, title FROM Books;";
+    let patronQuery = "SELECT patronID, name FROM Patrons;";
+    let transactions;
+    let books;
+    let patrons;
+    db.pool.query(transactionQuery, function (error, rows, fields) {
         if (error) {
-            res.status(500).send('Database error: ' + error.message);
-        } else {
-            res.render('transactions', { data: results });
+            console.log(error);
+            res.sendStatus(400);
         }
+        transactions = rows;
+        db.pool.query(bookQuery, (error, rows, fields) => {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            books = rows;
+
+            let bookmap = {}
+            books.map(book => {
+                let bookID = parseInt(book.bookID, 10);
+                bookmap[bookID] = book['title'];
+            })
+
+            db.pool.query(patronQuery, (error, rows, fields) => {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                patrons = rows;
+
+                let patronmap = {}
+                patrons.forEach(patron => {
+                    let patronID = parseInt(patron.patronID, 10);
+                    patronmap[patron.name] = patronID;
+                })
+
+                const data = {transactions, books, bookmap, patrons, patronmap}
+                res.render('transactions', data);
+            })
+        })
+
     });
 });
+
+
 
 // DELETE TRANSACTION
 app.delete('/delete-transaction/:transactionID', function (req, res, next) {
@@ -157,17 +195,50 @@ app.delete('/delete-transaction/:transactionID', function (req, res, next) {
 app.post('/add-transaction-form', function (req, res) {
 
     let data = req.body;
-    let query1 = `INSERT INTO Transactions (transactionID, bookID, patronID, transactionDate, transactionType) VALUES (?, ?, ?, ?, ?)`;
+    let queryAddTransaction = `INSERT INTO Transactions (transactionID, bookID, patronID, transactionDate, transactionType) VALUES (?, ?, ?, ?, ?)`;
+    let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?';
+    let queryPatronName = 'SELECT patronID, name FROM Patrons WHERE name = ?';
     // Execute the query with parameter values
-    db.pool.query(query1, [data.transactionID, data.bookID, data.patronID, data.transactionDate, data.transactionType], function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.redirect('/transactions');
-        }
+        // Execute the query with parameter values
+        db.pool.query(queryBookInfo, [data.title], function (error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            }
+            else {
+                // Don't run the query if there aren't any rows in the Books table
+                if (rows.length > 0) {
+                    let bookID = rows[0].bookID;
+                    let title = rows[0].title;
+
+                    db.pool.query(queryPatronName, [data.name], function(error, rows, field) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        }
+                        else {
+                            if(rows.length > 0) {
+                                let patronID = rows[0].patronID;
+                                let name = rows[0].name;
+
+                                db.pool.query(queryAddTransaction, [data.transactionID, bookID, title, patronID, name, data.transactionDate, data.transactionType], function (error, rows, fields) {
+                                    if (error) {
+                                        console.log(error);
+                                        res.sendStatus(400);
+                                    } else {
+                                        res.redirect('/transactions');
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
+
+                }
+            }
+        });
     });
-});
 
 
 // DISPLAY HOLDS TABLE
@@ -230,14 +301,14 @@ app.post('/add-hold-form', function (req, res) {
 
     let data = req.body;
     let queryAddHold = `INSERT INTO Holds (holdID, bookID, title, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?'
+    let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?';
 
     // Execute the query with parameter values
     db.pool.query(queryBookInfo, [data.title], function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
-        } 
+        }
         else {
             // Don't run the query if there aren't any rows in the Books table
             if (rows.length > 0) {
@@ -268,7 +339,7 @@ app.put('/update-hold-form', function (req, res, next) {
 
     let queryUpdateHold = `UPDATE Holds SET status = ?, notificationPref = ? WHERE holdID = ?`;
     let selectQuery = 'SELECT * FROM Holds WHERE holdID = ?'
-    
+
     db.pool.query(queryUpdateHold, [status, notificationPref, holdID], function (error, rows, fields) {
         if (error) {
             console.log(error);
