@@ -8,7 +8,7 @@
 // Express
 const express = require('express');
 const app = express();
-const PORT = 3792;
+const PORT = 3793;
 const path = require('path');
 // Database
 const db = require('./database/db-connector');
@@ -190,12 +190,12 @@ app.get('/holds', function (req, res) {
             books = rows;
 
             let bookmap = {}
-            books.map(title => {
-                let bookID = parseInt(books.bookID, 10);
-                bookmap[bookID] = books[title];
+            books.forEach(book => {
+                let bookID = parseInt(book.bookID, 10);
+                bookmap[book.title] = bookID;
             })
 
-            const data = {holds, books}
+            const data = {holds, books, bookmap}
             res.render('holds', data)
         })
 
@@ -229,18 +229,34 @@ app.delete('/delete-hold/:holdID', function (req, res, next) {
 app.post('/add-hold-form', function (req, res) {
 
     let data = req.body;
-    let query1 = `INSERT INTO Holds (holdID, title, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?)`;
+    let queryAddHold = `INSERT INTO Holds (holdID, bookID, title, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?'
 
     // Execute the query with parameter values
-    db.pool.query(query1, [data.holdID, data.title, data.datePlaced, data.posInQueue, data.status, data.notificationPref], function (error, rows, fields) {
+    db.pool.query(queryBookInfo, [data.title], function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
-        } else {
-            res.redirect('/holds');
+        } 
+        else {
+            // Don't run the query if there aren't any rows in the Books table
+            if (rows.length > 0) {
+                let bookID = rows[0].bookID;
+                let title = rows[0].title;
+
+                db.pool.query(queryAddHold, [data.holdID, bookID, title, data.datePlaced, data.posInQueue, data.status, data.notificationPref], function (error, rows, fields) {
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    } else {
+                        res.redirect('/holds');
+                    }
+                });
+            }
         }
     });
 });
+
 
 // UPDATE HOLD
 app.put('/update-hold-form', function (req, res, next) {
@@ -251,16 +267,15 @@ app.put('/update-hold-form', function (req, res, next) {
     let notificationPref = data.notificationPref;
 
     let queryUpdateHold = `UPDATE Holds SET status = ?, notificationPref = ? WHERE holdID = ?`;
-
+    let selectQuery = 'SELECT * FROM Holds WHERE holdID = ?'
+    
     db.pool.query(queryUpdateHold, [status, notificationPref, holdID], function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         }
         else {
-            let selectQuery = 'SELECT * FROM Holds WHERE holdID = ?'
             db.pool.query(selectQuery, [holdID], function (error, rows, fields) {
-
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
