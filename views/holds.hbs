@@ -15,14 +15,14 @@
         </tr>
     </thead>
       <tbody>
-        {{#each data}}
+        {{#each holds}}
           <tr>
-            <td>{{holdID}}</td>
-            <td>{{bookID}}</td>
-            <td>{{datePlaced}}</td>
-            <td>{{posInQueue}}</td>
-            <td>{{status}}</td>
-            <td>{{notificationPref}}</td>
+            <td>{{this.holdID}}</td>
+            <td>{{this.title}}</td>
+            <td>{{this.datePlaced}}</td>
+            <td>{{this.posInQueue}}</td>
+            <td>{{this.status}}</td>
+            <td>{{this.notificationPref}}</td>
             <td>
                <button onClick="deleteHold({{this.holdID}})">Delete</button>
             </td>
@@ -48,11 +48,18 @@
                         <td><label for="holdID">Hold ID:</label></td>
                         <td><input type="number" name ="holdID" id="holdID" required></td>
                         <td>*Required Field</td>
-                    </tr>
                     <tr>
-                        <td><label for="bookID">Book ID:</label></td>
-                        <td><input type="number" name ="bookID" id="bookID" required></td>
+                        <td><label for="titleSelect">Select Book Title:</label></td>
+                        <td>
+                            <select id="titleSelect" name="title">
+                                <option value="">Select Book Title</option>
+                                {{#each books}}
+                                <option value="{{this.title}}">{{this.title}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
                         <td>*Required Field</td>
+                    </tr>
                     </tr>
                     <tr>
                         <td><label for="datePlaced">Date:</label></td>
@@ -110,7 +117,7 @@
                         <td>
                             <select id="holdSelect" name="holdID">
                                 <option value="">Select a Hold ID</option>
-                                {{#each data}}
+                                {{#each holds}}
                                 <option value="{{this.holdID}}">{{this.holdID}}</option>
                                 {{/each}}
                             </select>
