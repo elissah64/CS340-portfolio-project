@@ -7,19 +7,19 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Book</th>
-                <th>Patron</th>
+                <th>Book Title</th>
+                <th>Patron Name</th>
                 <th>Date</th>
                 <th>Type</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-                {{#each data}}
+                {{#each transactions}}
             <tr>
                 <td>{{this.transactionID}}</td>
-                <td>{{this.bookID}}</td>
-                <td>{{this.patronID}}</td>
+                <td>{{this.title}}</td>
+                <td>{{this.name}}</td>
                 <td>{{this.transactionDate}}</td>
                 <td>{{this.transactionType}}</td>
                 <td>
@@ -48,14 +48,28 @@
                         <td><input id="transactionID" type="number" name ="transactionID" required></td>
                         <td>*Required Field</td>
                     </tr>
-                    <tr>
+                  <tr>
                         <td><label for="title">Book Title:</label></td>
-                        <td><input id= "title" type="text" name ="title" required></td>
+                        <td>
+                            <select id="title" name="title">
+                                <option value="">Select Book Title</option>
+                                {{#each books}}
+                                <option value="{{this.title}}">{{this.title}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
                         <td><label for="name">Patron Name:</label></td>
-                        <td><input id="name" type="text" name ="name" required></td>
+                        <td>
+                            <select id="name" name="name">
+                                <option value="">Select Patron Name</option>
+                                {{#each patrons}}
+                                <option value="{{this.name}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
                         <td>*Required Field</td>
                     </tr>
                     <tr>
