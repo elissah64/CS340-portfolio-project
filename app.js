@@ -95,6 +95,7 @@ app.put('/update-patron-form', function (req, res, next) {
     let phone = data.phone;
 
     let queryUpdatePatron = `UPDATE Patrons SET name = ?, address = ?, email = ?, phone = ? WHERE patronID = ?`;
+    let selectQuery = 'SELECT * FROM Patrons WHERE patronID = ?'
 
     db.pool.query(queryUpdatePatron, [name, address, email, phone, patronID], function (error, rows, fields) {
         if (error) {
@@ -102,7 +103,6 @@ app.put('/update-patron-form', function (req, res, next) {
             res.sendStatus(400);
         }
         else {
-            let selectQuery = 'SELECT * FROM Patrons WHERE patronID = ?'
             db.pool.query(selectQuery, [patronID], function (error, rows, fields) {
 
                 if (error) {
@@ -141,7 +141,7 @@ app.get('/transactions', function (req, res) {
             let bookmap = {}
             books.map(book => {
                 let bookID = parseInt(book.bookID, 10);
-                bookmap[bookID] = book['title'];
+                bookmap[book.title] = bookID;
             })
 
             db.pool.query(patronQuery, (error, rows, fields) => {
@@ -195,7 +195,7 @@ app.delete('/delete-transaction/:transactionID', function (req, res, next) {
 app.post('/add-transaction-form', function (req, res) {
 
     let data = req.body;
-    let queryAddTransaction = `INSERT INTO Transactions (transactionID, bookID, patronID, transactionDate, transactionType) VALUES (?, ?, ?, ?, ?)`;
+    let queryAddTransaction = `INSERT INTO Transactions (transactionID, bookID, title, patronID, name, transactionDate, transactionType) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?';
     let queryPatronName = 'SELECT patronID, name FROM Patrons WHERE name = ?';
     // Execute the query with parameter values
