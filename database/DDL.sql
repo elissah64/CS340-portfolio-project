@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS Transactions (
 	transactionID int NOT NULL AUTO_INCREMENT UNIQUE,
 	bookID int NOT NULL,
 	patronID int NOT NULL,
+	title varchar(255) NOT NULL,
+	name varchar(255) NOT NULL,
 	transactionDate date NOT NULL DEFAULT CURRENT_DATE,
 	transactionType ENUM('Checkout', 'Return') NOT NULL,
 	PRIMARY KEY (transactionID),
@@ -84,14 +86,14 @@ VALUES
 ('Merwig Greenhand', 'Greenhand Gardens, Hobbiton', 'MerryMerwig@hobbits.com', '248-844-1564'),
 ('Poppy Puddifoot', 'Pleasant Pit, Hobbiton', 'Po11y@hobbits.com', '248-247-9377');
 
-INSERT INTO Transactions (bookID, patronID, transactionDate, transactionType)
+INSERT INTO Transactions (bookID, patronID, title, name, transactionDate, transactionType)
 VALUES
-((SELECT bookID FROM Books WHERE title = 'There and Back Again'),
-(SELECT patronID FROM Patrons WHERE name = 'Poppy Puddifoot'), '2024-04-01', 'Checkout'),
-((SELECT bookID FROM Books WHERE title = 'Dune'),
-(SELECT patronID FROM Patrons WHERE name = 'Erard Swiftfoot'), '2024-04-03', 'Checkout'),
-((SELECT bookID FROM Books WHERE title = 'The Shining'),
-(SELECT patronID FROM Patrons WHERE name = 'Leudast Chubb'), '2024-04-05', 'Checkout');
+(7, 8, (SELECT title FROM Books WHERE bookID = 7),
+(SELECT name FROM Patrons WHERE patronID = 8), '2024-04-01', 'Checkout'),
+(12, 5, (SELECT title FROM Books WHERE bookID = 12),
+(SELECT name FROM Patrons WHERE patronID = 5), '2024-04-03', 'Checkout'),
+(10, 6, (SELECT title FROM Books WHERE bookID = 10),
+(SELECT name FROM Patrons WHERE patronID = 6), '2024-04-05', 'Checkout');
 
 INSERT INTO Holds (bookID, title, datePlaced, posInQueue, status, notificationPref)
 VALUES
@@ -100,7 +102,7 @@ VALUES
 (9, (SELECT title FROM Books WHERE bookID = 9), '2024-04-05', 1, 'Active', 'call'),
 (12, (SELECT title FROM Books WHERE bookID = 12), '2024-04-05', 1, 'Pending', 'call');
 
-INSERT INTO Patron_Holds (patronID, holdID)
+INSERT INTO Patron_Holds (patronID, holdID, title, name, holdDate)
 VALUES
 ((SELECT patronID FROM Patrons WHERE name = 'Merwig Greenhand'), 1),
 ((SELECT patronID FROM Patrons WHERE name = 'Erard Swiftfoot'), 2),
