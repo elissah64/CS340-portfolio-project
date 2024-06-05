@@ -230,11 +230,8 @@ app.post('/add-transaction-form', function (req, res) {
                                     }
                                 });
                             }
-
                         }
                     });
-
-
                 }
             }
         });
@@ -244,32 +241,46 @@ app.post('/add-transaction-form', function (req, res) {
 // DISPLAY HOLDS TABLE
 app.get('/holds', function (req, res) {
     let holdsQuery = "SELECT * FROM Holds;";
-    let bookQuery = "SELECT * FROM Books;";
+    let bookQuery = "SELECT bookID, title FROM Books;";
+    let patronQuery = "SELECT patronID, name FROM Patrons;"
     let holds;
     let books;
+    let patrons;
     db.pool.query(holdsQuery, function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         }
         holds = rows;
-        db.pool.query(bookQuery, (error, rows, fields) => {
+        db.pool.query(patronQuery, (error, rows, fields) => {
             if (error) {
                 console.log(error);
                 res.sendStatus(400);
             }
-            books = rows;
+            patrons = rows;
 
-            let bookmap = {}
-            books.forEach(book => {
-                let bookID = parseInt(book.bookID, 10);
-                bookmap[book.title] = bookID;
+            let patronmap = {}
+            patrons.forEach(patron => {
+                let patronID = parseInt(patron.patronID, 10);
+                patronmap[patron.name] = patronID;
             })
+            db.pool.query(bookQuery, (error, rows, fields) => {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                books = rows;
 
-            const data = {holds, books, bookmap}
-            res.render('holds', data)
+                let bookmap = {}
+                books.forEach(book => {
+                    let bookID = parseInt(book.bookID, 10);
+                    bookmap[book.title] = bookID;
+                })
+
+                const data = {holds, patrons, patronmap,books, bookmap}
+                res.render('holds', data)
+            })
         })
-
     });
 });
 
@@ -300,33 +311,47 @@ app.delete('/delete-hold/:holdID', function (req, res, next) {
 app.post('/add-hold-form', function (req, res) {
 
     let data = req.body;
-    let queryAddHold = `INSERT INTO Holds (holdID, bookID, title, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+    let queryAddHold = `INSERT INTO Holds (holdID, patronID, name, bookID, title, datePlaced, posInQueue, status, notificationPref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     let queryBookInfo = 'SELECT bookID, title FROM Books WHERE title = ?';
-
+    let queryPatronName = 'SELECT patronID, name FROM Patrons WHERE name = ?';
     // Execute the query with parameter values
-    db.pool.query(queryBookInfo, [data.title], function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        }
-        else {
-            // Don't run the query if there aren't any rows in the Books table
-            if (rows.length > 0) {
-                let bookID = rows[0].bookID;
-                let title = rows[0].title;
-
-                db.pool.query(queryAddHold, [data.holdID, bookID, title, data.datePlaced, data.posInQueue, data.status, data.notificationPref], function (error, rows, fields) {
-                    if (error) {
-                        console.log(error);
-                        res.sendStatus(400);
-                    } else {
-                        res.redirect('/holds');
-                    }
-                });
+        // Execute the query with parameter values
+        db.pool.query(queryPatronName, [data.name], function (error, rows, fields) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
             }
-        }
+            else {
+                // Don't run the query if there aren't any rows in the Books table
+                if (rows.length > 0) {
+                    let patronID = rows[0].patronID;
+                    let name = rows[0].name;
+
+                    db.pool.query(queryBookInfo, [data.title], function(error, rows, field) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        }
+                        else {
+                            if(rows.length > 0) {
+                                let bookID = rows[0].bookID;
+                                let title = rows[0].title;
+
+                                db.pool.query(queryAddHold, [data.holdID, patronID, name, bookID, title, data.datePlaced, data.posInQueue, data.status, data.notificationPref], function (error, rows, fields) {
+                                    if (error) {
+                                        console.log(error);
+                                        res.sendStatus(400);
+                                    } else {
+                                        res.redirect('/holds');
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
     });
-});
 
 
 // UPDATE HOLD
@@ -334,13 +359,14 @@ app.put('/update-hold-form', function (req, res, next) {
     let data = req.body;
 
     let holdID = parseInt(data.holdID);
+    let posInQueue = parseInt(data.posInQueue);
     let status = data.status;
     let notificationPref = data.notificationPref;
 
-    let queryUpdateHold = `UPDATE Holds SET status = ?, notificationPref = ? WHERE holdID = ?`;
+    let queryUpdateHold = `UPDATE Holds SET posInQueue = ?, status = ?, notificationPref = ? WHERE holdID = ?`;
     let selectQuery = 'SELECT * FROM Holds WHERE holdID = ?'
 
-    db.pool.query(queryUpdateHold, [status, notificationPref, holdID], function (error, rows, fields) {
+    db.pool.query(queryUpdateHold, [posInQueue, status, notificationPref, holdID], function (error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -441,57 +467,9 @@ app.put('/update-book-form', function (req, res, next) {
     })
 });
 
+// PATRON_HOLD STUFF?
 
-// DISPLAY PATRON_HOLDS TABLE
-app.get('/patron_holds', function (req, res) {
-    let query1 = "SELECT * FROM Patron_Holds;";
-    db.pool.query(query1, function (error, results) {
-        if (error) {
-            res.status(500).send('Database error: ' + error.message);
-        } else {
-            res.render('patron_holds', { data: results });
-        }
-    });
-});
 
-// DELETE PATRON_HOLD
-app.delete('/delete-patron-hold/:patron_holdID', function (req, res, next) {
-    let data = req.body;
-    let deletePatronHold = `DELETE FROM Patron_Holds WHERE patron_holdID = ?`;
-
-    db.pool.query(deletePatronHold, [req.params.patron_holdID], function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        }
-        else {
-            db.pool.query(deletePatronHold, [req.params.patron_holdID], function (error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    res.sendStatus(204);
-                }
-            })
-        }
-    })
-});
-
-// ADD PATRON_HOLDS
-app.post('/add-patron_hold-form', function (req, res) {
-
-    let data = req.body;
-    let query1 = `INSERT INTO Patron_Holds (patron_holdID, name, title, transactionDate) VALUES (?, ?, ?, ?)`;
-    // Execute the query with parameter values
-    db.pool.query(query1, [data.patronID, data.name, data.address, data.email, data.phone], function (error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.redirect('/patron_holds');
-        }
-    });
-});
 
 /*
     LISTENER
