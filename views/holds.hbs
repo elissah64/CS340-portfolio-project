@@ -1,13 +1,13 @@
 <main>
-    <table class='main-table' id='holds-table'>
+    <table id='holds-table'>
         <caption>
             Holds
         </caption>
         <thead>
         <tr>
             <th>ID</th>
+            <th>Patron Name</th>
             <th>Book Title</th>
-            <th>Date</th>
             <th>Position in Queue</th>
             <th>Status</th>
             <th>Notification Preference</th>
@@ -18,8 +18,8 @@
         {{#each holds}}
           <tr>
             <td>{{this.holdID}}</td>
+            <td>{{this.name}}</td>
             <td>{{this.title}}</td>
-            <td>{{this.datePlaced}}</td>
             <td>{{this.posInQueue}}</td>
             <td>{{this.status}}</td>
             <td>{{this.notificationPref}}</td>
@@ -45,11 +45,19 @@
                 </caption>
                 <tbody>
                     <tr>
-                        <td><label for="holdID">Hold ID:</label></td>
-                        <td><input type="number" name ="holdID" id="holdID" required></td>
+                        <td><label for="patronSelect">Patron Name:</label></td>
+                        <td>
+                            <select id="patronSelect" name="name">
+                                <option value="">Select Patron Name</option>
+                                {{#each patrons}}
+                                <option value="{{this.name}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
                         <td>*Required Field</td>
+                    </tr>
                     <tr>
-                        <td><label for="titleSelect">Select Book Title:</label></td>
+                        <td><label for="titleSelect">Book Title:</label></td>
                         <td>
                             <select id="titleSelect" name="title">
                                 <option value="">Select Book Title</option>
@@ -59,7 +67,6 @@
                             </select>
                         </td>
                         <td>*Required Field</td>
-                    </tr>
                     </tr>
                     <tr>
                         <td><label for="datePlaced">Date:</label></td>
@@ -125,6 +132,11 @@
                         <td>*Required Field</td>
                     </tr>
                     <tr>
+                        <td><label for="posInQueueSelect">Position in Queue:</label></td>
+                        <td><input id="posInQueueSelect" name="posInQueue" type="number"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
                         <td><label for="statusSelect">Status:</label></td>
                         <td>
                             <select id="statusSelect" name="status">
@@ -156,7 +168,3 @@
     </form>
     <script src="/js/update_hold.js"></script>
   </div>
-<footer>
-    <p> &copy; 2024 Gwenn Thompson and Elissa Hada</p>
-    <p>Photo by <a href="https://unsplash.com/@thomasschweighofer_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Thomas Schweighofer</a> on <a href="https://unsplash.com/photos/landscape-photography-of-brown-wooden-house-with-trees-around-5dB9WGpJbFc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
-</footer>
